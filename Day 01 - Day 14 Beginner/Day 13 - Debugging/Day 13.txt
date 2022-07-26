@@ -1,0 +1,7 @@
+it is a code debugging from previous lessons
+just some data type conversion
+adding missing == in validation
+or code lines rearrangement
+
+
+no project in this lesson
