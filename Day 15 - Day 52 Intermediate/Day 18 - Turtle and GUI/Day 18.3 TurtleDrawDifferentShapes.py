@@ -3,6 +3,8 @@ from random import choice
 
 
 raphael = Turtle()
+raphael.shape("turtle")
+raphael.color('red')
 
 
 def random_pen_color():
