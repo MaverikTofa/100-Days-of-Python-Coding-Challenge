@@ -1,4 +1,9 @@
 from turtle import Screen, Turtle
+from paddle import Paddle
+from ball import Ball
+from score import Score
+import time
+
 
 screen = Screen()
 screen.bgcolor('Black')
@@ -6,30 +11,39 @@ screen.setup(800, 600)
 screen.title("PONG")
 screen.tracer(0)
 
-paddle = Turtle()
-paddle.shape('square')
-paddle.color('white')
-paddle.shapesize(stretch_wid=5, stretch_len=1)
-paddle.penup()
-paddle.goto(350, 0)
+ball = Ball()
+score = Score()
 
-
-def go_up():
-    new_y = paddle.ycor() + 20
-    paddle.goto(paddle.xcor(), new_y)
-
-
-def go_down():
-    new_y = paddle.ycor() - 20
-    paddle.goto(paddle.xcor(), new_y)
+r_paddle = Paddle((350, 0))
+l_paddle = Paddle((-350, 0))
 
 
 screen.listen()
-screen.onkey(go_up, 'Up')
-screen.onkey(go_down, 'Down')
+
+screen.onkey(r_paddle.go_up, 'Up')
+screen.onkey(r_paddle.go_down, 'Down')
+
+screen.onkey(l_paddle.go_up, 'w')
+screen.onkey(l_paddle.go_down, 's')
 
 game_is_on = True
 while game_is_on:
+    time.sleep(ball.move_speed)
     screen.update()
+    ball.move()
+
+    if ball.ycor() > 280 or ball.ycor() < -280:
+        ball.bounce_y()
+
+    if (ball.distance(r_paddle) < 50 and ball.xcor() > 330) or (ball.distance(l_paddle) < 50 and ball.xcor() < -330):
+        ball.bounce_x()
+
+    if ball.xcor() > 380:
+        ball.reset_position()
+        score.l_point()
+
+    if ball.xcor() < -380:
+        ball.reset_position()
+        score.r_point()
 
 screen.exitonclick()
